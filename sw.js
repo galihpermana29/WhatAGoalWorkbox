@@ -1,3 +1,4 @@
+importScripts('https://storage.googleapis.com/workbox-cdn/releases/5.1.2/workbox-sw.js');
 let staticCache = 'static-v5';
 let dynamicCache = 'dynamic-v5';
 let assets = [
