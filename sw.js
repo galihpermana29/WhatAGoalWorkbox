@@ -1,70 +1,75 @@
-let staticCache = 'static-v5';
-let dynamicCache = 'dynamic-v5';
-let assets = [
-	'/',
-	'/index.html',
-	'/pages/about.html',
-	'/pages/fallback.html',
-	'/pages/list.html',
-	'/pages/pl.html',
-	'/js/db.js',
-	'/js/getdata.js',
-	'/js/idb.js',
-	'/js/materialize.min.js',
-	'/js/registersw.js',
-	'/js/setup.js',
-	'/js/api.js',
-	'/css/about.css',
-	'/css/list.css',
-	'/css/materialize.min.css',
-	'/css/pl.css',
-	'/css/ucl.css',
-	'https://fonts.googleapis.com/icon?family=Material+Icons',
-	'https://fonts.googleapis.com/css2?family=Source+Serif+Pro:wght@400;600;700&display=swap',
-];
+importScripts(
+	'https://storage.googleapis.com/workbox-cdn/releases/5.1.2/workbox-sw.js'
+);
 
-self.addEventListener('install', (e) => {
-	e.waitUntil(
-		caches.open(staticCache).then((cache) => {
-			console.log('caching');
-			return cache.addAll(assets);
-		})
-	);
-	console.log('instalasi berhasil');
-});
+if (workbox) {
+	console.log('Workbox berhasil dimuat');
+} else {
+	console.log('Workbox gagal dimuat');
+}
 
-self.addEventListener('activate', (e) => {
-	console.log('activate');
-	clients.claim();
-	e.waitUntil(
-		caches.keys().then((key) => {
-			key.filter(
-				(key) => key !== staticCache && key !== dynamicCache
-			).map((key) => caches.delete(key));
-		})
-	);
-});
-
-self.addEventListener('fetch', (e) => {
-	console.log('fetching');
-	let baseurl = 'https://api.football-data.org/v2/competitions/2021/standings';
-	
-	if(e.request.url.match(/^(http|https)/i)){
-		e.respondWith(
-			caches.match(e.request).then((cacheRes) => {
-				return (
-					cacheRes ||
-					fetch(e.request).then((fetchRes) => {
-						return caches.open(dynamicCache).then((cache) => {
-							cache.put(e.request, fetchRes.clone());
-							return fetchRes;
-						});
-					})
-				);
-			}).catch((err) => caches.match('/pages/fallback.html'))
-		);
+workbox.precaching.precacheAndRoute(
+	[
+		// {url : '/index.html', revision: '1'},
+		{ url: '/css/materialize.min.css', revision: '2' },
+		{ url: '/js/materialize.min.js', revision: '2' },
+		{ url: '/css/about.css', revision: '2' },
+		{ url: '/css/list.css', revision: '2' },
+		{ url: '/css/pl.css', revision: '2' },
+		{ url: '/css/ucl.css', revision: '2' },
+		{ url: '/js/api.js', revision: '2' },
+		{ url: '/js/db.js', revision: '2' },
+		{ url: '/js/getdata.js', revision: '2' },
+		{ url: '/js/idb.js', revision: '2' },
+		{ url: '/js/registersw.js', revision: '2' },
+		{ url: '/js/setup.js', revision: '2' },
+		{ url: '/pages/about.html', revision: '2' },
+		{ url: '/manifest.json', revision: '2' },
+		{ url: '/img/icons/', revision: '2' },
+	],
+	{
+		// Ignore all URL parameters.
+		ignoreURLParametersMatching: [/.*/],
 	}
-});
+);
+
+workbox.routing.registerRoute(
+	new RegExp('/pages/about.html'),
+	new workbox.strategies.CacheFirst()
+);
+
+workbox.routing.registerRoute(
+	/^https:\/\/fonts\.googleapis\.com/,
+	new workbox.strategies.StaleWhileRevalidate({
+		cacheName: 'Google-fonts-stylesheets',
+	})
+);
+
+workbox.routing.registerRoute(
+	/^https:\/\/api\.football\-data\.org\/v2\//,
+	new workbox.strategies.StaleWhileRevalidate({
+		cacheName: 'API Request',
+	})
+);
+
+workbox.routing.registerRoute(
+	/^https:\/\/crests\.football\-data\.org\/(\w+)\.(svg|png|jpg|gif|vector|bitmap|JPEG)/,
+	new workbox.strategies.StaleWhileRevalidate({
+		cacheName: 'API Images Request',
+		plugins: [
+			new workbox.expiration.ExpirationPlugin({
+				maxEntries: 60,
+			}),
+		],
+	})
+);
+
+workbox.routing.registerRoute(
+	/^([\/pages\/pl\.html|\/index.html])/,
+	new workbox.strategies.StaleWhileRevalidate({
+		cacheName: 'Pages',
+	})
+);
 
 self.addEventListener('push', function (event) {
 	let body;

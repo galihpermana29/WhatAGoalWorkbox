@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', (e) => {
                <tr>
                   <td>${standing.table[0].position}</td>
                   <td>
-                     <img src="${standing.table[0].team.crestUrl}" width="25px" style="margin-right: .5rem;"></img>
+                     <img src="${standing.table[0].team.crestUrl}" width="25px" style="margin-right: .5rem;" alt="clubImages"></img>
                      ${standing.table[0].team.name}
                   </td>
                   <td>${standing.table[0].won}</td>
@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', (e) => {
                <tr>
                   <td>${standing.table[1].position}</td>
                   <td>
-                     <img src="${standing.table[1].team.crestUrl}" width="25px" style="margin-right: .5rem;"></img>
+                     <img src="${standing.table[1].team.crestUrl}" width="25px" style="margin-right: .5rem;" alt="clubImages"></img>
                      ${standing.table[1].team.name}
                   </td>
                   <td>${standing.table[1].won}</td>
@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', (e) => {
                <tr>
                   <td>${standing.table[2].position}</td>
                   <td>
-                     <img src="${standing.table[2].team.crestUrl}" width="25px" style="margin-right: .5rem;"></img>
+                     <img src="${standing.table[2].team.crestUrl}" width="25px" style="margin-right: .5rem;" alt="clubImages"></img>
                      ${standing.table[2].team.name}
                   </td>
                   <td>${standing.table[2].won}</td>
@@ -83,7 +83,7 @@ document.addEventListener('DOMContentLoaded', (e) => {
                <tr>
                   <td>${standing.table[3].position}</td>
                   <td>
-                     <img src="${standing.table[3].team.crestUrl}" width="25px" style="margin-right: .5rem;"></img>
+                     <img src="${standing.table[3].team.crestUrl}" width="25px" style="margin-right: .5rem;" alt="clubImages"></img>
                      ${standing.table[3].team.name}
                   </td>
                   <td>${standing.table[3].won}</td>
@@ -147,7 +147,7 @@ document.addEventListener('DOMContentLoaded', (e) => {
                <tr>
                   <td>${table.position}</td>
                   <td>
-                     <img src="${table.team.crestUrl}" width="25px" style="margin-right: .5rem;"></img>
+                     <img src="${table.team.crestUrl}" width="25px" style="margin-right: .5rem;" alt="clubImages"></img>
                      ${table.team.name}
                   </td>
                   <td>${table.won}</td>

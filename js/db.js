@@ -13,7 +13,7 @@ let storeData = async (item) => {
 	let db = await databases();
 	let tx = db.transaction('schedule', 'readwrite');
 	let store = tx.objectStore('schedule');
-	await store.add(item);
+	await store.put(item);
 };
 
 let readAllData = async () => {

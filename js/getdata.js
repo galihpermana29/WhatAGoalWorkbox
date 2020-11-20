@@ -5,23 +5,25 @@ document.addEventListener('DOMContentLoaded', () => {
 			let matchName = document.querySelector('#task-name').value;
 			let date = document.querySelector('#date').value;
 			let desc = document.querySelector('#description').value;
-         let time = document.querySelector('#time').value;
-         
-         if(matchName == "" || date == "" || desc == "" || time == ""){
-            alert('Please complete the forms')
-            return;
-         }
+			let time = document.querySelector('#time').value;
+
+			if (matchName == '' || date == '' || desc == '' || time == '') {
+				alert('Please complete the forms');
+				return;
+			}
 			let item = {
 				match: matchName,
 				date: date,
 				desc: desc,
 				time: time,
 			};
-
-			await storeData(item);
-			document.querySelector('.scheduleform').reset();
-			let data = await readData(item.match);
-			showData(data);
+			const answer = window.confirm('Add this data?');
+			if (answer) {
+				await storeData(item);
+				document.querySelector('.scheduleform').reset();
+				let data = await readData(item.match);
+				showData(data);
+			}
 		});
 	};
 
@@ -70,11 +72,16 @@ document.addEventListener('DOMContentLoaded', () => {
 		let content = document.querySelector('.schedulecontent');
 		content.addEventListener('click', function (e) {
 			if (e.target.id === 'deleteButton') {
-				delData =
-					e.target.parentElement.parentElement.children[0].textContent;
-				delElemen = e.target.parentElement.parentElement;
-				delElemen.remove();
-				deleteData(delData);
+				const answer = window.confirm('Are you sure delete this data?');
+				if (answer) {
+					delData =
+						e.target.parentElement.parentElement.children[0].textContent;
+					delElemen = e.target.parentElement.parentElement;
+					delElemen.remove();
+					deleteData(delData);
+				} else {
+					alert('Data not removed');
+				}
 			}
 		});
 	}
