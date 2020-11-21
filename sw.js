@@ -10,7 +10,9 @@ if (workbox) {
 
 workbox.precaching.precacheAndRoute(
 	[
-		// {url : '/index.html', revision: '1'},
+		{ url: '/index.html', revision: '2' },
+		{ url: '/pages/pl.html', revision: '2' },
+		{ url: '/pages/list.html', revision: '2' },
 		{ url: '/css/materialize.min.css', revision: '2' },
 		{ url: '/js/materialize.min.js', revision: '2' },
 		{ url: '/css/about.css', revision: '2' },
@@ -25,7 +27,6 @@ workbox.precaching.precacheAndRoute(
 		{ url: '/js/setup.js', revision: '2' },
 		{ url: '/pages/about.html', revision: '2' },
 		{ url: '/manifest.json', revision: '2' },
-		{ url: '/img/icons/', revision: '2' },
 	],
 	{
 		// Ignore all URL parameters.
@@ -58,14 +59,14 @@ workbox.routing.registerRoute(
 		cacheName: 'API Images Request',
 		plugins: [
 			new workbox.expiration.ExpirationPlugin({
-				maxEntries: 60,
+				maxEntries: 25,
 			}),
 		],
 	})
 );
 
 workbox.routing.registerRoute(
-	/^([\/pages\/pl\.html|\/index.html])/,
+	/^([\/pages\/pl\.html|\/index.html|\/pages\/list\.html])/,
 	new workbox.strategies.StaleWhileRevalidate({
 		cacheName: 'Pages',
 	})
